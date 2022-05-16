@@ -1,2 +1,2 @@
-# leetcode-solutions
-My accepted leetcode solutions
+# Competitive Programming Solutions
+My accepted competitive programming solutions
