@@ -1,21 +1,19 @@
 class Solution {
 private:
-    unordered_map<int, int> distance_count;
+    bool hasCycle(int cursor, bool color, vector<int> *matrix, vector<short> &color_map) {
+        if (color_map[cursor] != -1) return color_map[cursor] != color;
 
-    bool hasCycle(int cursor, int distance, vector<int> *matrix) {
-        if (distance_count.count(cursor)) return ((distance - distance_count[cursor]) % 2);
-
-        distance_count[cursor] = distance;
+        color_map[cursor] = color;
 
         for (int i = 0; i < matrix[cursor].size(); ++i)
-            if (hasCycle(matrix[cursor][i], distance + 1, matrix)) return true;
+            if (hasCycle(matrix[cursor][i], !color, matrix, color_map)) return true;
 
         return false;
     }
 
 public:
     bool possibleBipartition(int n, vector<vector<int>> &dislikes) {
-
+        vector<short> color_map(n + 1, -1);
         vector<int> matrix[n + 1];
 
         for (vector<int> &dislike: dislikes) {
@@ -24,7 +22,7 @@ public:
         }
 
         for (int i = 1; i <= n; ++i)
-            if (!distance_count.count(i) && hasCycle(i, -1, matrix)) return false;
+            if (color_map[i] == -1 && hasCycle(i, true, matrix, color_map)) return false;
 
         return true;
     }
