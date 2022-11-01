@@ -1,20 +1,19 @@
 class Solution {
 public:
     int missingElement(vector<int> &nums, int k) {
-        int s = 0, e = nums.size() - 1;
-
-        while (s + 1 < e) {
-            int mid = s + (e - s) / 2;
-            int left_missing = nums[mid] - nums[s] - mid + s;
-
-            if (left_missing >= k) e = mid - 1;
+        int start = 0, end = nums.size() - 1;
+        while ((end - start) > 1) {
+            int mid = start + (end - start) / 2;
+            int missing = (nums[mid] - nums[start]) - (mid - start);
+            if (missing >= k) end = mid - 1;
             else {
-                s = mid;
-                k -= left_missing;
+                start = mid;
+                k -= missing;
             }
         }
 
-        int result = nums[s] + k;
-        return (s != e && result >= nums[e]) ? result + 1 : result;
+        if (start == end) return nums[start] + k;
+        int missing = nums[start] + k;
+        return nums[end] <= missing ? missing + 1 : missing;
     }
 };
