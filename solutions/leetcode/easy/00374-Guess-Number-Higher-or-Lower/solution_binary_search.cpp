@@ -8,20 +8,18 @@
  */
 
 class Solution {
-private:
-    int f(int left, int right) {
-        if (left > right)
-            return -1;
-
-        int middle = left + ((right - left) / 2);
-
-        int guessDir = guess(middle);
-
-        return !guessDir ? middle : guessDir == -1 ? f(left, middle - 1) : f(middle + 1, right);
-    }
-
 public:
     int guessNumber(int n) {
-        return f(0, n);
+        int l = 1, r = n;
+
+        while (l < r) {
+            int pivot = l + (r - l) / 2;
+            int guess_res = guess(pivot);
+            if (!guess_res) return pivot;
+            if (guess_res == 1) l = pivot + 1;
+            else r = pivot - 1;
+        }
+
+        return l;
     }
 };
