@@ -28,9 +28,11 @@ public:
     bool validPath(int n, vector<vector<int>> &edges, int source, int destination) {
         DisjointSet djSet = DisjointSet(n);
 
-        for (vector<int> edge: edges)
+        for (vector<int> edge: edges){
             djSet.makeUnion(edge[0], edge[1]);
+            if(djSet.find(source) == djSet.find(destination)) return true;
+        }
 
-        return djSet.find(source) == djSet.find(destination);
+        return !edges.size();
     }
 };
