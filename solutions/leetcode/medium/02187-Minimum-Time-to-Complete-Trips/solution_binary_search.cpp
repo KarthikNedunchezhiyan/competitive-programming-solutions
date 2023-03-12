@@ -1,25 +1,21 @@
 class Solution {
-    vector<int> times;
-
-    long long totalTripsAtInstance(long long instance) {
-        long long totalTrips = 0;
-        for (long long time: times)
-            totalTrips += instance / time;
-
-        return totalTrips;
-    }
-
 public:
-    long long minimumTime(vector<int> &time, long long totalTrips) {
-        times = time;
-        long long l = 1, r = times[0] * totalTrips;
+    long long minimumTime(vector<int> &time, int totalTrips) {
+        long long left = 0, right = LLONG_MAX;
 
-        while (l < r) {
-            long long mid = l + (r - l) / 2;
-            if (totalTripsAtInstance(mid) >= totalTrips) r = mid;
-            else l = mid + 1;
+        while (left < right) {
+            long long mid = left + (right - left) / 2;
+
+            long long tripsMade = 0;
+            for (int &t: time) {
+                tripsMade += mid / t;
+                if (tripsMade > totalTrips) break;
+            }
+
+            if (tripsMade >= totalTrips) right = mid;
+            else left = mid + 1;
         }
 
-        return l;
+        return left;
     }
 };
